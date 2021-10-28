@@ -9,6 +9,7 @@ public class AppJeuDeVache {
 
 
 
+
 ________________________________________________________________________________________________________________________________________________________________________________
 
 
@@ -81,6 +82,11 @@ public class JeuVache {
     private void remplirTabVache() {
         int x;
         int y;
+//        Vache v;
+//        v = new Vache(1,1,"www");
+//        System.out.println();
+//        v.setX(12);
+
         String nom;
         for (int i = 0; i < tabVache.length; i++) {
             y = 0;
@@ -88,6 +94,7 @@ public class JeuVache {
             nom = Utility.lireString("Donner le nom de la vache");
 
             tabVache[i] = new Vache(x, y, nom);
+
             System.out.println(tabVache[i]);
         }
     }
@@ -98,6 +105,7 @@ public class JeuVache {
             if (tabVache[i].estDansLesLimites()) {
                 tabVache[i].avancer();
                 System.out.println(tabVache[i]);
+                tabVache[i].setNom("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq");
                 lesVachesOntAvancees = true;
             }
         }
@@ -121,22 +129,19 @@ public class JeuVache {
 ________________________________________________________________________________________________________________________________________________________________________________
 
 
-vache du debut
-
-
 
 
 public class Vache {
-    //Constante de classe
+    //Constantes de classe
     public static final int MAX_LONGUEUR_NOM = 10;
     public static final int MIN_Y = 0;
     public static final int MAX_Y = 100;
-    //static appartient à la classe et nom à chaque instance
+    //static appartient à la classe et non à chaque instance
     //final ne peut plus être modifié : donc une constante.
-    //les nom de vairable constant sont toujours écrit en majuscule.
+    //les noms de variable constant sont toujours écrits en majuscule.
 
     //variable de classe : cette variable est commune à la classe. Ça implique que toutes les instances vont aller à la même vitesse.
-    private static int vitesse;
+    private static int vitesse = 1; //vitesse par défaut sera de 1
 
     //variables d'instance
     private int x;  //int est un type simple
@@ -144,11 +149,10 @@ public class Vache {
     private String nom;
 
     //Constructeurs
-    public Vache(int x, int y, int vitesse, String nom) {
+    public Vache(int x, int y, String nom) {
         this.x = x;
         this.y = y;
-        this.vitesse = vitesse;
-        this.nom = nom;
+        setNom(nom); //S'il existe, vous devriez toujours utiliser le set pour demeurer cohérent.
     }
 
     //accesseurs et les mutateurs
@@ -167,7 +171,7 @@ public class Vache {
     public boolean estDansLesLimites() {
         boolean estDansLesLimitesY;
 
-        estDansLesLimitesY = Vache.MIN_Y <= y && y <= Vache.MAX_Y;
+        estDansLesLimitesY = Vache.YestDanslesLimites(y);
 
         return estDansLesLimitesY;
     }
@@ -182,13 +186,45 @@ public class Vache {
 
     //avancer en y seulement
     public void avancer() {
-        this.y += vitesse;
+        boolean yestDansLesLimites = estDansLesLimites();
+
+        if (yestDansLesLimites) {
+            this.y += vitesse;
+        }
     }
+
+    //Cette méthode est static parce qu'elle ne fait pas référence aux variables d'instance.
+    //En fait on a pas besoin d'instance pour l'utliser.
+    private static boolean YestDanslesLimites(int y) {
+        boolean estDanslesLimites;
+        estDanslesLimites = Vache.MIN_Y <= y && y <= Vache.MAX_Y;
+
+        return estDanslesLimites;
+    }
+
+
+
 
     public void setNom(String nom) {
         String strDebut = nom.substring(0, Vache.MAX_LONGUEUR_NOM);
         this.nom = strDebut;
     }
+
+    @Override
+    public String toString() {
+        String str = "Vache{" +
+                "x=" + x +
+                ", y=" + y +
+                ", nom='" + nom + '\'' +
+                '}';
+        return str;
+    }
+
 }
+
+
+
+
+
 
 
